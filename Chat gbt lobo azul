@@ -1,0 +1,59 @@
+from gpt4all import GPT4All
+model = GPT4All("Meta-Llama-3-8B-Instruct.Q4_0.gguf") # downloads / loads a 4.66GB LLM
+with model.chat_session():
+    print(model.generate("How can I run LLMs efficiently on my laptop?", maimport openai
+import speech_recognition as sr
+import pyttsx3
+
+# Configure sua chave de API da OpenAI
+openai.api_key = "SUA_CHAVE_DE_API_AQUI"
+
+# Inicializa o sintetizador de voz
+engine = pyttsx3.init()
+
+def falar(texto):
+    engine.say(texto)
+    engine.runAndWait()
+
+def ouvir():
+    r = sr.Recognizer()
+    with sr.Microphone() as source:
+        print("Fale algo...")
+        audio = r.listen(source)
+
+    try:
+        texto = r.recognize_google(audio, language="pt-BR")
+        print("Você disse:", texto)
+        return texto
+    except sr.UnknownValueError:
+        print("Não entendi o que você falou.")
+        return None
+    except sr.RequestError as e:
+        print("Erro ao conectar com o serviço de reconhecimento de voz:", e)
+        return None
+
+def lobo_azul_responder(pergunta):
+    # Personalidade do Lobo Azul
+    system_message = (
+        "Você é Lobo Azul, um lobo azul falante. "
+        "Você responde de forma amigável, sábia e corajosa, "
+        "como se fosse um lobo sábio que fala com humor e confiança."
+    )
+
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": system_message},
+            {"role": "user", "content": pergunta}
+        ]
+    )
+    resposta = response.choices[0].message['content']
+    return resposta
+
+# Loop principal
+while True:
+    texto_ouvido = ouvir()
+    if texto_ouvido:
+        resposta = lobo_azul_responder(texto_ouvido)
+        print("Lobo Azul:", resposta)
+        falar(resposta)x_tokens=1024))
